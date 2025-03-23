@@ -1,0 +1,10 @@
+# Core dependencies
+prefect==3.2.14
+polars==1.26.0
+duckdb==1.2.1
+rich==13.9.4
+matplotlib==3.10.1
+faker==37.0.2
+
+# Testing
+pytest==8.3.5
