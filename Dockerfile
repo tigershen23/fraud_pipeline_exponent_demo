@@ -1,19 +1,25 @@
-FROM python:3.10-slim
+FROM python:3.9-slim
 
+# Set working directory
 WORKDIR /app
 
-# Copy requirements first for better caching
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project
-COPY . .
+# Create necessary directories
+RUN mkdir -p data database outputs
 
-# Create output directories
-RUN mkdir -p fraud_pipeline/data fraud_pipeline/output
+# Copy source code
+COPY main.py .
+COPY src/ src/
+COPY tests/ tests/
 
-# Set up entrypoint
-ENTRYPOINT ["python", "fraud_pipeline/main.py"]
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
-# Default command (can be overridden)
-CMD ["--transactions", "1000", "--fraud", "0.05"]
+# Default command
+ENTRYPOINT ["python", "main.py"]
+
+# Default arguments - can be overridden with docker run
+CMD ["--num-records", "1000"]
